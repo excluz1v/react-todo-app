@@ -5,7 +5,7 @@ import { FireBaseReducer, ShowLoaderAC, AddNoterAC, DeleteNoteAC } from '../../r
 const url = process.env.REACT_APP_DB_URL
 
 
-const FireBaseContext = createContext()
+export const FireBaseContext = createContext()
 export const FireBaseState = ({ children }) => {
     const initialState = {
         notes: [],
@@ -31,7 +31,13 @@ export const FireBaseState = ({ children }) => {
 
     const [state, dispatch] = useReducer(FireBaseReducer, initialState)
     return (
-        <FireBaseContext.Provider value={{fetchNotes, addNote, deleteNote, loading:state.loading, notes:state.notes}}>{children}</FireBaseContext.Provider>
+        <FireBaseContext.Provider value={{
+            fetchNotes, addNote, deleteNote,
+            loading: state.loading,
+            notes: state.notes
+        }}>
+            {children}
+        </FireBaseContext.Provider>
     )
 }
 
