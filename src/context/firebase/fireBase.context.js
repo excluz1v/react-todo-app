@@ -12,7 +12,9 @@ export const FireBaseState = ({ children }) => {
         loading: false
     }
 
-
+    let RefreshNote = () => {
+dispatch(RefreshNoteAC())
+    }
     let fetchNotes = async () => {
         dispatch(ShowLoaderAC())
         axios.get(`${url}/notes.json`).then(resp => {
@@ -64,7 +66,7 @@ export const FireBaseState = ({ children }) => {
     const [state, dispatch] = useReducer(FireBaseReducer, initialState)
     return (
         <FireBaseContext.Provider value={{
-            fetchNotes, addNote, deleteNote, RefreshNoteAC,
+            fetchNotes, addNote, deleteNote, RefreshNote,
             loading: state.loading,
             notes: state.notes
         }}>

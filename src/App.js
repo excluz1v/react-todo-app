@@ -10,7 +10,7 @@ import { FireBaseState } from './context/firebase/fireBase.context';
 
 function App() {
     return (
-        <FireBaseState>
+        <FireBaseState >
             <AlertState >
                 <BrowserRouter >
                     <Navbar />
