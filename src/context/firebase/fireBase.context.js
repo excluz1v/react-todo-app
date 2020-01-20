@@ -46,14 +46,14 @@ export const FireBaseState = ({ children }) => {
             title, date: new Date().toJSON()
         }
         try {
-            dispatch(ShowLoaderAC())
+        
             const res = await axios.post(`${url}/notes.json`, note)
             const payload = {
                 ...note,
                 id: res.data.name
             }
             dispatch(AddNoterAC(payload))
-            dispatch(hideLoader())
+      
 
         }
         catch (e) {

@@ -1,29 +1,37 @@
 import React, { useContext } from 'react'
 import { FireBaseContext } from '../context/firebase/fireBase.context'
-
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 export const Notes = ({ notes }) => {
 
-    let {deleteNote}= useContext(FireBaseContext)
+    let { deleteNote } = useContext(FireBaseContext)
     return (
-        <ul className="list-group">
+        <TransitionGroup component={'ul'} className="list-group">
             {notes ? notes.map(note => (
-                < li className="note list-group-item " key={note.id}>
-                    <div>
-                        <strong>
-                        </strong>
-                        {note.title}
-                        <small>{new Date().toLocaleDateString()}
-                        </small>
-                    </div>
-                    <button type="button" onClick={() => {deleteNote(note.id)
+                <CSSTransition
+                 key={note.id}
+                 classNames={'note'}
+                 timeout={1000}
+                 >
+                    < li className="note list-group-item ">
+                        <div>
+                            <strong>
+                                {note.title}
+                            </strong>
+                            <p></p>
+                            <small>{note.date}
+                            </small>
+                        </div>
+                        <button type="button" onClick={() => {
+                            deleteNote(note.id)
 
-                    }} className="btn btn-outline-danger btn-sm">&times;</button>
-                </li>
+                        }} className="btn btn-outline-danger btn-sm">&times;</button>
+                    </li>
+                </CSSTransition>
             ))
                 : undefined
             }
 
-        </ul >
+        </TransitionGroup>
 
     )
 }
