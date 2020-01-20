@@ -5,10 +5,14 @@ export const AddNoterAC = (text) => {
     return { type: 'Add_Note', text }
 }
 export const DeleteNoteAC = (id) => {
+
     return { type: 'Delete_Note', id }
 }
 export const RefreshNoteAC = (asd) => {
     return { type: 'Refresh_Note', asd }
+}
+export const hideLoader = () => {
+    return { type: 'Hide_loader' }
 }
 
 export const FireBaseReducer = (state, action) => {
@@ -16,6 +20,10 @@ export const FireBaseReducer = (state, action) => {
         case "SHow_loader":
             return {
                 ...state, loading: true
+            };
+        case "Hide_loader":
+            return {
+                ...state, loading: false
             }; case "Add_Note":
             return {
                 ...state, notes: [...state.notes, action.text]

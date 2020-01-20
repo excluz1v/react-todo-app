@@ -6,17 +6,17 @@ import { Loader } from '../components/Loader'
 
 export const Home = () => {
 
-    const { loading, notes, fetchNotes } = useContext(FireBaseContext)
+    const { loading, notes, RefreshNoteAC, deleteNote} = useContext(FireBaseContext)
     useEffect(() => {
-        fetchNotes()
+        RefreshNoteAC()
 
-    }, []);
+    },[notes] );
 
     return (
         <Fragment >
             <Form />
             <hr />
-            {loading ? <Loader /> : <Notes notes={notes} />}
+            {loading ? <Loader /> : <Notes notes={notes} onRemove ={deleteNote}/>}
         </Fragment>
     )
 }

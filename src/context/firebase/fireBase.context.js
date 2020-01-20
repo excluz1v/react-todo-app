@@ -1,8 +1,8 @@
 import React, { createContext, useReducer } from 'react'
 import axios from 'axios'
-import { FireBaseReducer, ShowLoaderAC, AddNoterAC, DeleteNoteAC } from '../../reducers/fireBase.reducer'
+import { FireBaseReducer, ShowLoaderAC, AddNoterAC, DeleteNoteAC, RefreshNoteAC, hideLoader } from '../../reducers/fireBase.reducer'
 
-const url = process.env.REACT_APP_DB_URL
+const url = "https://react-todo-project-696c2.firebaseio.com"
 
 
 export const FireBaseContext = createContext()
@@ -11,20 +11,52 @@ export const FireBaseState = ({ children }) => {
         notes: [],
         loading: false
     }
+
+
     let fetchNotes = async () => {
         dispatch(ShowLoaderAC())
-        const res = await axios.get(`${url}/notes.json`)
-        console.log('fetchNotes', res.data)
+        axios.get(`${url}/notes.json`).then(resp => {
+            if (resp.data) {
+                let payload = Object.keys(resp.data).map(key => {
+                    return {
+                        ...resp.data[key],
+                        id: key
+                    }
+                })
+                dispatch(RefreshNoteAC(payload))
+            }
+            dispatch(hideLoader())
+        })
+        // const res = await axios.get(`${url}/notes.json`)
+        // const payload = Object.keys(res.data).map(key => {
+        //     return {
+        //         ...res.data[key],
+        //         id: key
+        //     }
+        // })
+        // dispatch(RefreshNoteAC(payload))
     }
 
     let addNote = async (title) => {
         const note = {
             title, date: new Date().toJSON()
         }
-        const res = axios.post(`${url}/notes.json`, note).then(AddNoterAC(title))
-        console.log('addNote', res.data)
+        try {
+            const res = await axios.post(`${url}/notes.json`, note)
+            const payload = {
+                ...note,
+                id: res.data.name
+            }
+            dispatch(AddNoterAC(payload))
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
+
+
     }
     let deleteNote = async (id) => {
+
         await axios.delete(`${url}/notes/${id}.json`).then(dispatch(DeleteNoteAC(id)))
 
     }
@@ -32,7 +64,7 @@ export const FireBaseState = ({ children }) => {
     const [state, dispatch] = useReducer(FireBaseReducer, initialState)
     return (
         <FireBaseContext.Provider value={{
-            fetchNotes, addNote, deleteNote,
+            fetchNotes, addNote, deleteNote, RefreshNoteAC,
             loading: state.loading,
             notes: state.notes
         }}>
