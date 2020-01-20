@@ -10,7 +10,6 @@ export const ALertReducer = (state, action) => {
                 ...state, visible: false
             }; default: return state
     }
-
 }
 
 export const ShowAlertAC = (text) => {

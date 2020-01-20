@@ -5,7 +5,6 @@ export const AddNoterAC = (text) => {
     return { type: 'Add_Note', text }
 }
 export const DeleteNoteAC = (id) => {
-
     return { type: 'Delete_Note', id }
 }
 export const RefreshNoteAC = (asd) => {
